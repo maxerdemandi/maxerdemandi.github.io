@@ -97,10 +97,11 @@
     transition: border-color .2s ease;
   }
   header.site.scrolled { border-bottom-color: var(--rule); }
-  .bar { max-width: 1040px; margin: 0 auto; padding: 0 20px; height: 60px; display: flex; align-items: center; gap: 24px; }
+  .bar { max-width: 1040px; margin: 0 auto; padding: 0 20px; height: 60px; display: flex; align-items: center; gap: 24px; position: relative; justify-content: center; }
+  .bar-tools { position: absolute; right: 20px; }
   .brand { font-weight: 600; font-size: 17px; color: var(--text); white-space: nowrap; }
   .brand:hover { text-decoration: none; }
-  nav.primary { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+  nav.primary { display: flex; gap: 20px; align-items: center; }
   nav.primary a { color: var(--muted); font-size: 14px; padding: 4px 0; border-bottom: 2px solid transparent; white-space: nowrap; }
   nav.primary a:hover { color: var(--text); text-decoration: none; }
   nav.primary a.active { color: var(--text); border-bottom-color: var(--accent); }
