@@ -40,6 +40,10 @@
     --award: #9a3412;
     --award-soft: #fff4ec;
     --header-bg: rgba(250, 250, 249, 0.86);
+    /* Topic colors: 1 = measurement (yellow), 2 = computational (blue), 3 = beliefs (green) */
+    --t1-bg: #fdf5d6; --t1-ink: #8a5a00; --t1-line: #f0d98a;
+    --t2-bg: #e7f0fd; --t2-ink: #1d4ed8; --t2-line: #bdd3f6;
+    --t3-bg: #e5f4ea; --t3-ink: #17703a; --t3-line: #b4dec2;
   }
   :root[data-theme="dark"] {
     --bg: #0f0e0d;
@@ -54,7 +58,14 @@
     --award: #fdba8c;
     --award-soft: #2d1d12;
     --header-bg: rgba(15, 14, 13, 0.86);
+    --t1-bg: #2a2413; --t1-ink: #f1cd6a; --t1-line: #4a3e1a;
+    --t2-bg: #141f33; --t2-ink: #93b4fd; --t2-line: #26395a;
+    --t3-bg: #12251a; --t3-ink: #80d49d; --t3-line: #21452f;
   }
+  .t-measurement   { --tbg: var(--t1-bg); --tink: var(--t1-ink); --tline: var(--t1-line); }
+  .t-computational { --tbg: var(--t2-bg); --tink: var(--t2-ink); --tline: var(--t2-line); }
+  .t-beliefs       { --tbg: var(--t3-bg); --tink: var(--t3-ink); --tline: var(--t3-line); }
+  .i { width: 14px; height: 14px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; scroll-padding-top: 76px; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -64,7 +75,7 @@
     color: var(--text);
     font-family: Inter, -apple-system, "Segoe UI", system-ui, sans-serif;
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
     transition: background-color .2s ease, color .2s ease;
   }
@@ -129,12 +140,13 @@
   .social a { color: var(--muted); width: 36px; height: 36px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
   .social a:hover { color: var(--text); background: var(--chip); text-decoration: none; }
   .social svg { width: 19px; height: 19px; }
+  .social a.text-link { width: auto; padding: 0 10px; font-size: 14.5px; font-weight: 500; white-space: nowrap; }
   @media (max-width: 600px) {
     .intro { flex-direction: column; text-align: center; gap: 18px; padding-top: 36px; }
     .social { justify-content: center; margin-left: 0; }
     .intro h1 { font-size: 28px; }
   }
-  .bio p { margin: 0 0 16px; }
+  .bio p { margin: 0 0 14px; }
 
   /* ---------- Section titles ---------- */
   section { padding-top: 40px; }
@@ -149,7 +161,7 @@
   /* ---------- Entry rows (education, funding, awards) ---------- */
   .entry {
     display: grid; grid-template-columns: 60px 1fr auto; column-gap: 16px;
-    padding: 16px 0; border-bottom: 1px solid var(--rule);
+    padding: 14px 0; border-bottom: 1px solid var(--rule);
   }
   .entry:last-child { border-bottom: 0; }
   .entry.no-badge { grid-template-columns: 1fr auto; }
@@ -167,7 +179,7 @@
   .entry .meta { text-align: right; font-size: 14px; color: var(--muted); white-space: nowrap; }
   .entry .meta .date { color: var(--faint); }
   @media (max-width: 600px) {
-    .entry, .entry.no-badge { grid-template-columns: 44px 1fr; }
+    .entry, .entry.no-badge { grid-template-columns: 60px 1fr; }
     .entry.no-badge { grid-template-columns: 1fr; }
     .entry .meta { grid-column: 2; text-align: left; margin-top: 4px; white-space: normal; }
     .entry.no-badge .meta { grid-column: 1; }
@@ -176,12 +188,18 @@
   /* ---------- Research themes ---------- */
   .themes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .theme {
-    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+    background: var(--tbg, var(--surface)); border: 1px solid var(--tline, var(--rule)); border-radius: 12px;
     padding: 20px; display: flex; flex-direction: column;
   }
-  .theme h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; line-height: 1.35; }
-  .theme p { margin: 0 0 16px; color: var(--muted); font-size: 14.5px; line-height: 1.6; }
-  .theme button { margin-top: auto; align-self: flex-start; }
+  .theme-icon {
+    width: 34px; height: 34px; border-radius: 9px; margin-bottom: 12px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--tink); color: var(--tbg);
+  }
+  .theme-icon .i { width: 19px; height: 19px; }
+  .theme h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; line-height: 1.3; }
+  .theme p { margin: 0 0 14px; color: var(--muted); font-size: 14.5px; line-height: 1.5; }
+  .theme button { margin-top: auto; align-self: flex-start; color: var(--tink); }
   @media (max-width: 760px) { .themes { grid-template-columns: 1fr; } }
 
   .text-btn {
@@ -193,7 +211,6 @@
   /* ---------- Publications ---------- */
   .filters { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
   .chip-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
-  .chip-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); width: 64px; }
   .chip {
     font: inherit; font-size: 13.5px; cursor: pointer;
     background: transparent; color: var(--muted);
@@ -202,29 +219,30 @@
   }
   .chip:hover { color: var(--text); border-color: var(--faint); }
   .chip[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
-  @media (max-width: 600px) { .chip-label { width: 100%; } }
+  .chip.topic { display: inline-flex; align-items: center; gap: 6px; background: var(--tbg); border-color: var(--tline); color: var(--tink); }
+  .chip.topic:hover { border-color: var(--tink); }
+  .chip.topic[aria-pressed="true"] { background: var(--tink); border-color: var(--tink); color: var(--bg); }
   .pub-note { font-size: 14px; color: var(--faint); margin: 14px 0 0; }
-  .pub-group h3 { font-size: 15px; font-weight: 600; color: var(--faint); margin: 30px 0 4px; }
-  .pub { padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .pub-group h3 { font-size: 15px; font-weight: 600; color: var(--faint); margin: 26px 0 2px; }
+  .pub { padding: 12px 0; border-bottom: 1px solid var(--rule); }
   .pub:last-child { border-bottom: 0; }
-  .pub .title { font-weight: 600; line-height: 1.45; display: block; color: var(--text); }
-  a.title:hover { color: var(--accent); }
+  .pub .title { font-weight: 600; line-height: 1.35; display: block; color: var(--text); margin-bottom: 2px; }
   .pub .authors { color: var(--muted); font-size: 15px; }
   .pub .authors strong { color: var(--text); font-weight: 600; }
-  .pub .venue { font-size: 15px; color: var(--muted); }
+  .pub .venue, .pub .conf { font-size: 15px; color: var(--muted); }
   .pub .venue em { color: var(--text); }
-  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .tag {
-    font-size: 12.5px; border-radius: 6px; padding: 2px 8px;
-    background: var(--chip); color: var(--muted); border: 1px solid var(--rule);
+  .pub-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .read-btn, .award {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500; line-height: 1.4; border-radius: 6px; padding: 3px 10px;
   }
-  a.tag { color: var(--accent); }
-  a.tag:hover { border-color: var(--accent); text-decoration: none; }
-  .tag.award { background: var(--award-soft); color: var(--award); border-color: transparent; }
+  .read-btn { color: var(--accent); background: var(--surface); border: 1px solid var(--rule); }
+  .read-btn:hover { border-color: var(--accent); text-decoration: none; }
+  .award { color: var(--award); background: var(--award-soft); }
   .empty { color: var(--faint); padding: 18px 0; display: none; }
 
   /* ---------- Teaching ---------- */
-  .course { display: grid; grid-template-columns: 150px 1fr auto; gap: 14px; padding: 11px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+  .course { display: grid; grid-template-columns: 150px 1fr auto; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
   .course:last-child { border-bottom: 0; }
   .course .code { font-size: 13.5px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
   .course .kind { font-size: 13px; color: var(--faint); white-space: nowrap; }
@@ -239,7 +257,7 @@
   .rubrique p { margin: 0 0 18px; color: var(--muted); }
   .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin: 6px 0 22px; }
   .pillars h4 { margin: 0 0 4px; font-size: 15px; font-weight: 600; }
-  .pillars p { margin: 0; font-size: 14.5px; line-height: 1.55; }
+  .pillars p { margin: 0; font-size: 14.5px; line-height: 1.45; }
   @media (max-width: 700px) { .pillars { grid-template-columns: 1fr; } .rubrique { padding: 22px; } }
   .button {
     display: inline-flex; align-items: center; gap: 8px;
@@ -249,7 +267,7 @@
   .button:hover { text-decoration: none; opacity: .88; }
 
   /* ---------- News ---------- */
-  .news-item { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 11px 0; border-bottom: 1px solid var(--rule); }
+  .news-item { display: grid; grid-template-columns: 110px 1fr; gap: 16px; padding: 9px 0; border-bottom: 1px solid var(--rule); }
   .news-item:last-child { border-bottom: 0; }
   .news-item time { color: var(--faint); font-size: 14px; font-variant-numeric: tabular-nums; padding-top: 1px; }
   @media (max-width: 600px) { .news-item { grid-template-columns: 1fr; gap: 0; } }
@@ -263,7 +281,7 @@
     display: flex; align-items: center; justify-content: center; color: var(--faint); font-size: 13px;
   }
   .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .life-grid figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .life-grid figcaption { font-size: 14px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
   @media (max-width: 700px) { .life-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 440px) { .life-grid { grid-template-columns: 1fr; } }
 
@@ -271,6 +289,15 @@
 </style>
 </head>
 <body>
+
+<!-- Icon set, referenced below with <svg class="i"><use href="#i-name"/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-measurement" viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21z"/><path d="m7.5 12.5 2 2M10.5 9.5l2 2M13.5 6.5l2 2"/></symbol>
+  <symbol id="i-computational" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="9" r="2.5"/><circle cx="9" cy="18" r="2.5"/><path d="m8.4 6.7 7.2 1.6M6.8 8.4l1.5 7.2M16.4 11 10.8 16"/></symbol>
+  <symbol id="i-beliefs" viewBox="0 0 24 24"><path d="M3 10.5v3a1 1 0 0 0 1 1h3l6 4.5v-14L7 9.5H4a1 1 0 0 0-1 1z"/><path d="M16.5 9a4 4 0 0 1 0 6"/><path d="M19 6.5a7.5 7.5 0 0 1 0 11"/></symbol>
+  <symbol id="i-read" viewBox="0 0 24 24"><path d="M14 3H6.5A1.5 1.5 0 0 0 5 4.5v15A1.5 1.5 0 0 0 6.5 21h11a1.5 1.5 0 0 0 1.5-1.5V8z"/><path d="M14 3v5h5M8.5 13h7M8.5 16.5h5"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5.5h2.5v1.5a3 3 0 0 1-3 3M7 5.5H4.5v1.5a3 3 0 0 0 3 3"/></symbol>
+</svg>
 
 <header class="site" id="top-bar">
   <div class="bar">
@@ -281,7 +308,6 @@
       <a href="#publications">Publications</a>
       <a href="#teaching">Teaching</a>
       <a href="#funding">Funding &amp; Awards</a>
-      <a href="#rubrique">Rubrique</a>
       <a href="#news">News</a>
       <a href="#life">Life Lately</a>
     </nav>
@@ -322,9 +348,7 @@
           <a href="https://scholar.google.com/citations?user=otk9o_YAAAAJ&amp;hl=en" aria-label="Google Scholar" title="Google Scholar" target="_blank" rel="noopener">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M2 9.5 12 4l10 5.5-10 5.5z"/><path d="M6 11.7V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.3"/><path d="M22 9.5V15"/></svg>
           </a>
-          <a href="https://www.rubrique.co" aria-label="Rubrique Advisory Co." title="Rubrique Advisory Co." target="_blank" rel="noopener">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.1 0l3-3a5 5 0 0 0-7.1-7.1l-1.2 1.2"/><path d="M14 10a5 5 0 0 0-7.1 0l-3 3a5 5 0 0 0 7.1 7.1l1.2-1.2"/></svg>
-          </a>
+          <a class="text-link" href="https://www.rubrique.co" target="_blank" rel="noopener">Rubrique Advisory Co.</a>
         </div>
       </div>
     </div>
@@ -373,17 +397,20 @@
     <h2 class="section-title">Research</h2>
     <p class="lead">My research asks how measurement and design choices shape what survey and text data appear to show, and applies that question to information disorders and extreme beliefs.</p>
     <div class="themes">
-      <div class="theme">
+      <div class="theme t-measurement">
+        <div class="theme-icon" aria-hidden="true"><svg class="i"><use href="#i-measurement"/></svg></div>
         <h3>Measurement and response bias</h3>
         <p>Structural equation, factor mixture, and latent class models that detect and correct response styles and other sources of systematic error. My dissertation showed that correcting for extreme response style reverses, attenuates, or eliminates central findings in survey-based extremism research.</p>
         <button class="text-btn" type="button" data-goto-topic="measurement">Related publications →</button>
       </div>
-      <div class="theme">
+      <div class="theme t-computational">
+        <div class="theme-icon" aria-hidden="true"><svg class="i"><use href="#i-computational"/></svg></div>
         <h3>Computational analysis of language and networks</h3>
         <p>Machine learning, psycholinguistic, and network methods for studying how misinformation and extremist content spread and what their language reveals, with simulation used to test method choices before they reach real data.</p>
         <button class="text-btn" type="button" data-goto-topic="computational">Related publications →</button>
       </div>
-      <div class="theme">
+      <div class="theme t-beliefs">
+        <div class="theme-icon" aria-hidden="true"><svg class="i"><use href="#i-beliefs"/></svg></div>
         <h3>Information disorders and extreme beliefs</h3>
         <p>Conspiracy belief, mis/disinformation, and violent extremism across entertainment media, social identity, and crisis contexts, along with scientometric mapping of how these fields produce knowledge.</p>
         <button class="text-btn" type="button" data-goto-topic="beliefs">Related publications →</button>
@@ -393,30 +420,21 @@
 
   <!-- =====================================================================
        PUBLICATIONS
-       To add an entry, copy one <article class="pub"> block into the right
-       year group and set:
-         data-type  = journal | chapter | dissertation | conference | progress
-         data-topic = any of: measurement computational beliefs (space-separated)
-         data-featured = "true" to show it under Featured
+       Listed by year, newest first. To add an entry, copy one
+       <article class="pub"> block into the right year group. Lines, in order:
+         title · authors · outlet (or "In progress") · conference (if presented)
+         · Read button (if there is a link) · award (if any)
+       data-topic = any of: measurement computational beliefs (space-separated)
        ===================================================================== -->
   <section id="publications">
     <h2 class="section-title">Publications</h2>
 
     <div class="filters">
-      <div class="chip-row" role="group" aria-label="Filter by type">
-        <span class="chip-label">Type</span>
-        <button class="chip" type="button" data-filter="type" data-value="all" aria-pressed="true">All</button>
-        <button class="chip" type="button" data-filter="type" data-value="featured" aria-pressed="false">Featured</button>
-        <button class="chip" type="button" data-filter="type" data-value="published" aria-pressed="false">Articles &amp; chapters</button>
-        <button class="chip" type="button" data-filter="type" data-value="conference" aria-pressed="false">Conference papers</button>
-        <button class="chip" type="button" data-filter="type" data-value="progress" aria-pressed="false">Under review &amp; in progress</button>
-      </div>
       <div class="chip-row" role="group" aria-label="Filter by topic">
-        <span class="chip-label">Topic</span>
-        <button class="chip" type="button" data-filter="topic" data-value="all" aria-pressed="true">All topics</button>
-        <button class="chip" type="button" data-filter="topic" data-value="measurement" aria-pressed="false">Measurement</button>
-        <button class="chip" type="button" data-filter="topic" data-value="computational" aria-pressed="false">Computational</button>
-        <button class="chip" type="button" data-filter="topic" data-value="beliefs" aria-pressed="false">Information disorders &amp; extremism</button>
+        <button class="chip" type="button" data-topic="all" aria-pressed="true">All topics</button>
+        <button class="chip topic t-measurement" type="button" data-topic="measurement" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-measurement"/></svg>Measurement</button>
+        <button class="chip topic t-computational" type="button" data-topic="computational" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-computational"/></svg>Computational</button>
+        <button class="chip topic t-beliefs" type="button" data-topic="beliefs" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#i-beliefs"/></svg>Information disorders &amp; extremism</button>
       </div>
     </div>
     <p class="pub-note">For a complete and current list, see <a href="https://scholar.google.com/citations?user=otk9o_YAAAAJ&amp;hl=en" target="_blank" rel="noopener">Google Scholar</a>.</p>
@@ -424,24 +442,18 @@
     <div id="pub-list">
 
       <div class="pub-group">
-        <h3>Under review &amp; in progress</h3>
-        <article class="pub" data-type="progress" data-topic="beliefs">
-          <span class="title">The political effects of fictional narratives: Theory and methods</span>
-          <div class="authors">Jack Gierzynski, <strong>Max Erdemandi</strong>, Tom van Laer, &amp; Anita Atwell Seate</div>
-          <div class="venue">Under review, <em>The Annals of the International Communication Association</em> · Presented at the 120th APSA Annual Meeting, Political Communication Division, 2025</div>
-        </article>
-        <article class="pub" data-type="progress" data-topic="measurement beliefs">
+        <h3>In progress</h3>
+        <article class="pub" data-topic="measurement beliefs">
           <span class="title">Mapping entertainment media motivations: Measure development and application</span>
           <div class="authors"><strong>Max Erdemandi</strong> &amp; Anita Atwell Seate</div>
           <div class="venue">In progress</div>
-          <div class="tags"><span class="tag">Faculty Research Grant, Dept. of Communication, UMD</span></div>
         </article>
-        <article class="pub" data-type="progress" data-topic="computational">
+        <article class="pub" data-topic="computational">
           <span class="title">Artificial intelligence as a crisis communicator: Psycholinguistic comparison of AI and government messaging in disasters</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
           <div class="venue">In progress</div>
         </article>
-        <article class="pub" data-type="progress" data-topic="computational beliefs">
+        <article class="pub" data-topic="computational beliefs">
           <span class="title">Psycholinguistic cues of secondary traumatization in close relationships with conspiracy theory believers</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
           <div class="venue">In progress</div>
@@ -450,100 +462,120 @@
 
       <div class="pub-group">
         <h3>2026</h3>
-        <article class="pub" data-type="journal" data-topic="beliefs" data-featured="true">
-          <a class="title" href="https://doi.org/10.1080/01463373.2026.2671258" target="_blank" rel="noopener">Thrills, tears, and deep state fears: Entertainment media enjoyment as predictor of conspiracy belief</a>
+        <article class="pub" data-topic="beliefs">
+          <span class="title">Thrills, tears, and deep state fears: Entertainment media enjoyment as predictor of conspiracy belief</span>
           <div class="authors"><strong>Max Erdemandi</strong> &amp; Anita Atwell Seate</div>
           <div class="venue"><em>Communication Quarterly</em>, 2026</div>
-          <div class="tags">
-            <a class="tag" href="https://doi.org/10.1080/01463373.2026.2671258" target="_blank" rel="noopener">Paper</a>
-            <span class="tag">Faculty Research Grant, Dept. of Communication, UMD</span>
+          <div class="pub-actions">
+            <a class="read-btn" href="https://doi.org/10.1080/01463373.2026.2671258" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-read"/></svg>Read</a>
           </div>
         </article>
-        <article class="pub" data-type="chapter" data-topic="beliefs" data-featured="true">
-          <a class="title" href="https://doi.org/10.1515/9783111334622-015" target="_blank" rel="noopener">Fragmented fields, shared foundations: Mapping social identity research on fake news, conspiracy beliefs, and extremism</a>
+        <article class="pub" data-topic="beliefs">
+          <span class="title">Fragmented fields, shared foundations: Mapping social identity research on fake news, conspiracy beliefs, and extremism</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
-          <div class="venue">In J. McAlaney (Ed.), <em>Handbook of fake news, misinformation, and disinformation: Critical perspectives and contemporary challenges</em> · In press</div>
-          <div class="tags">
-            <a class="tag" href="https://doi.org/10.1515/9783111334622-015" target="_blank" rel="noopener">Chapter</a>
-            <span class="tag award">Top Student Paper, Group Communication Division, NCA 2025</span>
+          <div class="venue">In J. McAlaney (Ed.), <em>Handbook of fake news, misinformation, and disinformation: Critical perspectives and contemporary challenges</em> (in press)</div>
+          <div class="conf">Presented at the 111th NCA Annual Convention, Group Communication Division, 2025</div>
+          <div class="pub-actions">
+            <a class="read-btn" href="https://doi.org/10.1515/9783111334622-015" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-read"/></svg>Read</a>
+            <span class="award"><svg class="i" aria-hidden="true"><use href="#i-award"/></svg>Top Student Paper, Group Communication Division, NCA 2025</span>
           </div>
         </article>
-        <article class="pub" data-type="dissertation" data-topic="measurement beliefs" data-featured="true">
+        <article class="pub" data-topic="measurement beliefs">
           <span class="title">Strongly (dis)agree: Distorting effects of extreme response style in survey-based extremism research</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
           <div class="venue">Doctoral dissertation, University of Maryland, 2026</div>
-          <div class="tags"><span class="tag award">Ann G. Wylie Dissertation Fellowship</span></div>
+          <div class="pub-actions">
+            <span class="award"><svg class="i" aria-hidden="true"><use href="#i-award"/></svg>Ann G. Wylie Dissertation Fellowship</span>
+          </div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2025</h3>
-        <article class="pub" data-type="conference" data-topic="measurement">
+        <article class="pub" data-topic="beliefs">
+          <span class="title">The political effects of fictional narratives: Theory and methods</span>
+          <div class="authors">Jack Gierzynski, <strong>Max Erdemandi</strong>, Tom van Laer, &amp; Anita Atwell Seate</div>
+          <div class="venue">Under review, <em>The Annals of the International Communication Association</em></div>
+          <div class="conf">Presented at the 120th APSA Annual Meeting, Political Communication Division, 2025</div>
+        </article>
+        <article class="pub" data-topic="measurement">
           <span class="title">Evaluating extreme response style (ERS) effects on model fit: A simulation study on person- and item-centric approaches in latent measurement models</span>
           <div class="authors"><strong>Max Erdemandi</strong> &amp; Sanford Student</div>
-          <div class="venue">111th NCA Annual Convention, Applied Communication Division, 2025</div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the 111th NCA Annual Convention, Applied Communication Division, 2025</div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2024</h3>
-        <article class="pub" data-type="journal" data-topic="beliefs">
-          <a class="title" href="https://nij.ojp.gov/topics/articles/assessingeffectiveness-programs-prevent-and-counter-violent-extremism" target="_blank" rel="noopener">Assessing the effectiveness of programs and initiatives to prevent/counter violent extremism (P/CVE): Key insights and recommended practices</a>
+        <article class="pub" data-topic="beliefs">
+          <span class="title">Assessing the effectiveness of programs and initiatives to prevent/counter violent extremism (P/CVE): Key insights and recommended practices</span>
           <div class="authors"><strong>Max Erdemandi</strong>, Elena Savoia, &amp; Michael Williams</div>
           <div class="venue"><em>NIJ Journal</em>, National Institute of Justice, 2024</div>
-          <div class="tags"><a class="tag" href="https://nij.ojp.gov/topics/articles/assessingeffectiveness-programs-prevent-and-counter-violent-extremism" target="_blank" rel="noopener">Article</a></div>
+          <div class="pub-actions">
+            <a class="read-btn" href="https://nij.ojp.gov/topics/articles/assessingeffectiveness-programs-prevent-and-counter-violent-extremism" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-read"/></svg>Read</a>
+          </div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2023</h3>
-        <article class="pub" data-type="conference" data-topic="computational beliefs">
+        <article class="pub" data-topic="computational beliefs">
           <span class="title">How to predict misinformation? Exploring the latent psycholinguistic space</span>
           <div class="authors"><strong>Max Erdemandi</strong> &amp; Katherine Raymond</div>
-          <div class="venue">109th NCA Annual Convention, Applied Communication Division, 2023</div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the 109th NCA Annual Convention, Applied Communication Division, 2023</div>
         </article>
-        <article class="pub" data-type="conference" data-topic="beliefs">
+        <article class="pub" data-topic="beliefs">
           <span class="title">The dark side of entertainment: Exploring the ties between entertainment media enjoyment and conspiracy belief</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
-          <div class="venue">109th NCA Annual Convention, Mass Communication Division, 2023</div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the 109th NCA Annual Convention, Mass Communication Division, 2023</div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2022</h3>
-        <article class="pub" data-type="journal" data-topic="beliefs">
-          <a class="title" href="https://doi.org/10.1080/00909882.2022.2128620" target="_blank" rel="noopener">Stand down: A <em>Journal of Applied Communication Research</em> forum on extremism and White nationalism in the United States military</a>
+        <article class="pub" data-topic="beliefs">
+          <span class="title">Stand down: A <em>Journal of Applied Communication Research</em> forum on extremism and White nationalism in the United States military</span>
           <div class="authors">Victoria McDermott, Amy May, Leandra H. Hernández, <strong>Max Erdemandi</strong>, Nick Mararac, Hamilton Bean, William T. Howe, Kurt Braddock, Stevie Munz, Precious Yamaguchi, &amp; Alexa DiCamillo</div>
           <div class="venue"><em>Journal of Applied Communication Research</em>, 2022</div>
-          <div class="tags"><a class="tag" href="https://doi.org/10.1080/00909882.2022.2128620" target="_blank" rel="noopener">Paper</a></div>
+          <div class="pub-actions">
+            <a class="read-btn" href="https://doi.org/10.1080/00909882.2022.2128620" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-read"/></svg>Read</a>
+          </div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2021</h3>
-        <article class="pub" data-type="conference" data-topic="computational beliefs">
+        <article class="pub" data-topic="computational beliefs">
           <span class="title">Masks don't work: Ideology associations and the geospatial propagation patterns of COVID-19 disinformation on Twitter</span>
           <div class="authors"><strong>Max Erdemandi</strong></div>
-          <div class="venue">107th NCA Annual Convention, Mass Communication Division, 2021</div>
-          <div class="tags"><span class="tag award">Top Student Paper, Mass Communication Division</span></div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the 107th NCA Annual Convention, Mass Communication Division, 2021</div>
+          <div class="pub-actions">
+            <span class="award"><svg class="i" aria-hidden="true"><use href="#i-award"/></svg>Top Student Paper, Mass Communication Division, NCA 2021</span>
+          </div>
         </article>
-        <article class="pub" data-type="conference" data-topic="beliefs">
+        <article class="pub" data-topic="beliefs">
           <span class="title">QAnon casualties: A thematic analysis of secondary trauma effects of online extremist behavior on interpersonal relationships</span>
           <div class="authors"><strong>Max Erdemandi</strong> &amp; Victoria McDermott</div>
-          <div class="venue">107th NCA Annual Convention, Mass Communication Division, 2021</div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the 107th NCA Annual Convention, Mass Communication Division, 2021</div>
         </article>
       </div>
 
       <div class="pub-group">
         <h3>2017</h3>
-        <article class="pub" data-type="conference" data-topic="computational">
+        <article class="pub" data-topic="computational">
           <span class="title">Expansion of automated event coding for better understanding security analysis</span>
           <div class="authors"><strong>Max Erdemandi</strong>, Rachel Augustine, Ryan Steed, &amp; Lin Zhao</div>
-          <div class="venue">ISA-South Annual Conference, Conflict Division, 2017</div>
+          <div class="venue">In progress</div>
+          <div class="conf">Presented at the ISA-South Annual Conference, Conflict Division, 2017</div>
         </article>
       </div>
 
-      <p class="empty" id="pub-empty">No entries match these filters.</p>
+      <p class="empty" id="pub-empty">No entries match this topic.</p>
     </div>
   </section>
 
@@ -783,29 +815,17 @@
   window.addEventListener('resize', markActive);
   markActive();
 
-  // ---------- Publication filters ----------
-  var state = { type: 'all', topic: 'all' };
+  // ---------- Publication filter (by topic) ----------
+  var topic = 'all';
   var pubs = Array.prototype.slice.call(document.querySelectorAll('#pub-list .pub'));
   var groups = Array.prototype.slice.call(document.querySelectorAll('#pub-list .pub-group'));
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip[data-topic]'));
   var empty = document.getElementById('pub-empty');
 
-  function matchesType(el) {
-    var t = el.getAttribute('data-type');
-    switch (state.type) {
-      case 'all': return true;
-      case 'featured': return el.getAttribute('data-featured') === 'true';
-      case 'published': return t === 'journal' || t === 'chapter' || t === 'dissertation';
-      default: return t === state.type;
-    }
-  }
-  function matchesTopic(el) {
-    if (state.topic === 'all') return true;
-    return (' ' + (el.getAttribute('data-topic') || '') + ' ').indexOf(' ' + state.topic + ' ') !== -1;
-  }
-  function applyFilters() {
+  function applyFilter() {
     var shown = 0;
     pubs.forEach(function (el) {
-      var ok = matchesType(el) && matchesTopic(el);
+      var ok = topic === 'all' || (' ' + (el.getAttribute('data-topic') || '') + ' ').indexOf(' ' + topic + ' ') !== -1;
       el.style.display = ok ? '' : 'none';
       if (ok) shown++;
     });
@@ -814,26 +834,19 @@
       g.style.display = any ? '' : 'none';
     });
     empty.style.display = shown ? 'none' : 'block';
-    document.querySelectorAll('.chip').forEach(function (c) {
-      var on = state[c.getAttribute('data-filter')] === c.getAttribute('data-value');
-      c.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
+    chips.forEach(function (c) { c.setAttribute('aria-pressed', c.getAttribute('data-topic') === topic ? 'true' : 'false'); });
   }
-  document.querySelectorAll('.chip').forEach(function (c) {
-    c.addEventListener('click', function () {
-      state[c.getAttribute('data-filter')] = c.getAttribute('data-value');
-      applyFilters();
-    });
+  chips.forEach(function (c) {
+    c.addEventListener('click', function () { topic = c.getAttribute('data-topic'); applyFilter(); });
   });
   document.querySelectorAll('[data-goto-topic]').forEach(function (b) {
     b.addEventListener('click', function () {
-      state.type = 'all';
-      state.topic = b.getAttribute('data-goto-topic');
-      applyFilters();
+      topic = b.getAttribute('data-goto-topic');
+      applyFilter();
       document.getElementById('publications').scrollIntoView({ behavior: 'smooth' });
     });
   });
-  applyFilters();
+  applyFilter();
 
   document.getElementById('year').textContent = new Date().getFullYear();
 })();
